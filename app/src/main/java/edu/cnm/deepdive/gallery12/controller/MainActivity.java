@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.gallery12;
+package edu.cnm.deepdive.gallery12.controller;
 
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -9,6 +9,7 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import edu.cnm.deepdive.gallery12.R;
 
 public class MainActivity extends AppCompatActivity {
 
