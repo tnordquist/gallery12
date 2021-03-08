@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import edu.cnm.deepdive.gallery12.BuildConfig;
 
 public class GoogleSignInService {
 
@@ -23,7 +24,7 @@ public class GoogleSignInService {
     GoogleSignInOptions options = new GoogleSignInOptions.Builder()
         .requestEmail()
         .requestId()
-//        .requestIdToken(BuildConfig.CLIENT_ID)
+        .requestIdToken(BuildConfig.CLIENT_ID)
         .build();
     client = GoogleSignIn.getClient(context, options);
   }
@@ -42,7 +43,7 @@ public class GoogleSignInService {
 
   public Task<GoogleSignInAccount> refresh() {
     return client.silentSignIn()
-        .addOnSuccessListener((account) -> this.account = account);
+        .addOnSuccessListener(this::setAccount);
   }
 
   public void startSignIn(Activity activity, int requestCode) {
@@ -56,7 +57,7 @@ public class GoogleSignInService {
 
     try {
       task = GoogleSignIn.getSignedInAccountFromIntent(data);
-      account = task.getResult(ApiException.class);
+      setAccount(task.getResult(ApiException.class));
     } catch (ApiException e) {
       // Exception will be passed automatically to onFailureListener
     }
@@ -65,7 +66,14 @@ public class GoogleSignInService {
 
   public Task<Void> signOut() {
     return client.signOut()
-        .addOnCompleteListener((ignore) -> account = null);
+        .addOnCompleteListener((ignore) -> setAccount(null));
+  }
+
+  private void setAccount(GoogleSignInAccount account) {
+    this.account = account;
+    if (account != null) {
+      Log.d(getClass().getSimpleName() + "  Bearer Token " , account.getIdToken());
+    }
   }
 
   private static class InstanceHolder {
