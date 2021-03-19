@@ -2,14 +2,21 @@ package edu.cnm.deepdive.gallery12.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import edu.cnm.deepdive.gallery12.NavGraphDirections;
+import edu.cnm.deepdive.gallery12.NavGraphDirections.OpenUploadProperties;
 import edu.cnm.deepdive.gallery12.R;
 import edu.cnm.deepdive.gallery12.databinding.FragmentFirstBinding;
 
@@ -40,7 +47,8 @@ public class FirstFragment extends Fragment {
   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-      // TODO Open dialog fragment.
+      OpenUploadProperties action = NavGraphDirections.openUploadProperties(data.getData());
+      Navigation.findNavController(binding.getRoot()).navigate(action);
     }
   }
 

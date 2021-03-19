@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'androidx.navigation.safeargs'
 
 static def getProperty(String filename, String property) {
     Properties properties = new Properties()
@@ -12,7 +13,7 @@ static def quoted(String value) {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "edu.cnm.deepdive.gallery12"
@@ -31,6 +32,9 @@ android {
         buildConfigField "String", "BASE_URL", quoted(
                 getProperty(connection_properties, "base_url")
         )
+        buildConfigField "String", "CONTENT_FORMAT", quoted(
+                getProperty(connection_properties, "content_format")
+        )
     }
 
     buildTypes {
@@ -44,7 +48,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    //noinspection GroovyAssignabilityCheck
     buildFeatures {
+        //noinspection GroovyAssignabilityCheck
         viewBinding true
     }
 
@@ -55,15 +61,15 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
 
-    implementation 'androidx.fragment:fragment:1.3.0'
+    implementation 'androidx.fragment:fragment:1.3.1'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.navigation:navigation-fragment:2.3.3'
-    implementation 'androidx.navigation:navigation-ui:2.3.3'
+
+    implementation "androidx.navigation:navigation-fragment:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui:$navigationVersion"
 
     // Google Sign In dependency
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
-    implementation 'androidx.wear:wear:1.1.0'
 
     // Gson (Google JSON) dependency
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -75,12 +81,14 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
+    // Picasso library
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
     // OkHttp logging dependency
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    compileOnly 'com.google.android.wearable:wearable:2.8.1'
 
 }
