@@ -31,9 +31,6 @@ android {
         buildConfigField "String", "BASE_URL", quoted(
                 getProperty(connection_properties, "base_url")
         )
-        buildConfigField "String", "CONTENT_FORMAT", quoted(
-                getProperty(connection_properties, "content_format")
-        )
     }
 
     buildTypes {
@@ -70,6 +67,7 @@ dependencies {
 
     // Gson (Google JSON) dependency
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Retrofit (REST client) with ReactiveX & Gson integration
     def retrofit_version = '2.9.0'

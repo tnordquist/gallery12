@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
               binding = ActivityLoginBinding.inflate(getLayoutInflater());
               binding.signIn.setOnClickListener((v) -> service.startSignIn(this, LOGIN_REQUEST_CODE));
               setContentView(binding.getRoot());
-        });
+            });
   }
 
   @Override
