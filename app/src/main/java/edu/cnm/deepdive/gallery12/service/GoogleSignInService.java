@@ -15,6 +15,8 @@ import io.reactivex.Single;
 
 public class GoogleSignInService {
 
+  private static final String BEARER_TOKEN_FORMAT = "Bearer %s";
+
   private static Application context;
 
   private final GoogleSignInClient client;
@@ -52,6 +54,11 @@ public class GoogleSignInService {
     );
   }
 
+  public Single<String> refreshBearerToken() {
+    return refresh()
+        .map((account) -> String.format(BEARER_TOKEN_FORMAT, account.getIdToken()));
+  }
+
   public void startSignIn(Activity activity, int requestCode) {
     account = null;
     Intent intent = client.getSignInIntent();
@@ -77,9 +84,6 @@ public class GoogleSignInService {
 
   private void setAccount(GoogleSignInAccount account) {
     this.account = account;
-    if (account != null) {
-      Log.d(getClass().getSimpleName() + "  Bearer Token ", account.getIdToken());
-    }
   }
 
   private static class InstanceHolder {
