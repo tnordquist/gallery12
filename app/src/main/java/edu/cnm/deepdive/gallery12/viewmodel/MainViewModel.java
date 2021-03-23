@@ -16,7 +16,7 @@ import edu.cnm.deepdive.gallery12.service.ImageRepository;
 import edu.cnm.deepdive.gallery12.service.UserRepository;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class MainViewModel extends AndroidViewModel implements LifecycleObserver {
+public class  MainViewModel extends AndroidViewModel implements LifecycleObserver {
 
   private final UserRepository userRepository;
   private final ImageRepository imageRepository;
