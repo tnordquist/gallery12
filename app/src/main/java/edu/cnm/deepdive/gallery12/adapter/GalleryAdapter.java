@@ -67,6 +67,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<Holder> {
         binding.image.setContentDescription(description);
         binding.image.setTooltipText(description);
       }
+        binding.description.setText(description);
+
     }
   }
 }

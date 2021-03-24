@@ -15,7 +15,7 @@
     android:scaleType="fitCenter"
     android:layout_marginTop="@dimen/half_margin"
     android:adjustViewBounds="true"
-    tools:ignore="contentDescription"/>
+    />
 
   <TextView
     android:id="@+id/title"
