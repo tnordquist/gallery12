@@ -22,4 +22,6 @@
   <string name="image_title_hint">Title of image</string>
   <string name="image_description_hint">Description of image</string>
   <string name="sign_out">Sign out</string>
+  <string name="gallery_title">Title</string>
+  <string name="description">Description</string>
 </resources>

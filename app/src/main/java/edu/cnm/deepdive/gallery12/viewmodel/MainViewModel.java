@@ -71,7 +71,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
   }
 
   public void loadImages() {
-    throwable.setValue(null);
+    throwable.postValue(null);
     pending.add(
         imageRepository.getAll()
             .subscribe(
