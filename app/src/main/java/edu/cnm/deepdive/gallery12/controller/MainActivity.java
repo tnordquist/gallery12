@@ -11,11 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import edu.cnm.deepdive.gallery12.R;
 import edu.cnm.deepdive.gallery12.service.GoogleSignInService;
-import edu.cnm.deepdive.gallery12.viewmodel.MainViewModel;
+import edu.cnm.deepdive.gallery12.viewmodel.ImageViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-  private MainViewModel viewModel;
+  private ImageViewModel viewModel;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void setUpViewModel() {
-    viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+    viewModel = new ViewModelProvider(this).get(ImageViewModel.class);
     getLifecycle().addObserver(viewModel);
     viewModel.getThrowable().observe(this, (throwable) -> {
       if(throwable != null) {
