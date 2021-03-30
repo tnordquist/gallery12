@@ -18,14 +18,20 @@ import androidx.lifecycle.ViewModelProvider;
 import com.squareup.picasso.Picasso;
 import edu.cnm.deepdive.gallery12.R;
 import edu.cnm.deepdive.gallery12.databinding.FragmentUploadPropertiesBinding;
+import edu.cnm.deepdive.gallery12.model.Gallery;
+import edu.cnm.deepdive.gallery12.viewmodel.GalleryViewModel;
 import edu.cnm.deepdive.gallery12.viewmodel.ImageViewModel;
+import java.util.List;
+import java.util.UUID;
 
 public class UploadPropertiesFragment extends DialogFragment implements TextWatcher {
 
   private FragmentUploadPropertiesBinding binding;
   private Uri uri;
   private AlertDialog dialog;
-  private ImageViewModel viewModel;
+  private ImageViewModel imageViewModel;
+  private GalleryViewModel galleryViewModel;
+  private List<Gallery> galleries;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -63,10 +69,13 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
         .get()
         .load(uri)
         .into(binding.image);
+    binding.imageTitle.addTextChangedListener(this);
+    binding.galleryDescription.addTextChangedListener(this);
     binding.galleryTitle.addTextChangedListener(this);
     //noinspection ConstantConditions
-    viewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
-    // TODO Observe as necessary.
+    imageViewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
+    galleryViewModel.getGalleries().observe(getViewLifecycleOwner(),
+        (galleries) -> UploadPropertiesFragment.this.galleries = galleries);
   }
 
   @Override
@@ -85,14 +94,22 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
   private void checkSubmitConditions() {
     Button positive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
     //noinspection ConstantConditions
-    positive.setEnabled(!binding.galleryTitle.getText().toString().trim().isEmpty());
+    positive.setEnabled(!binding.imageTitle.getText().toString().trim().isEmpty());
   }
 
   @SuppressWarnings("ConstantConditions")
   private void upload() {
-    String title = binding.galleryTitle.getText().toString().trim();
+    String title = binding.imageTitle.getText().toString().trim();
     String description = binding.galleryDescription.getText().toString().trim();
-//    viewModel.store(uri, title, (description.isEmpty() ? null : description));
+    String galleryTitle = binding.galleryTitle.getText().toString().trim();
+    String titleId = "";
+    for (Gallery g : galleries) {
+      if (g != null && galleryTitle.equals(g.getTitle())) {
+        titleId = g.getId().toString();
+      }
+    }
+    UUID uuid = UUID.fromString(titleId);
+    imageViewModel.store(uuid, uri, title, (description.isEmpty() ? null : description));
   }
 
 }

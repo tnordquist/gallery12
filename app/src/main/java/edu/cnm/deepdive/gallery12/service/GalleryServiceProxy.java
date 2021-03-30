@@ -36,7 +36,7 @@ public interface GalleryServiceProxy {
 
   @Multipart
   @POST("images/{id}")
-  Single<Image> post(@Path("id") UUID id, @Header("Authorization") String bearerToken,
+    Single<Image> post(@Path("id") UUID id, @Header("Authorization") String bearerToken,
       @Part MultipartBody.Part file, @Part("title") RequestBody title,
       @Part("description") RequestBody description);
 
