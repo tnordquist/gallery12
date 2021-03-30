@@ -74,6 +74,7 @@ public class UploadPropertiesFragment extends DialogFragment implements TextWatc
     binding.galleryTitle.addTextChangedListener(this);
     //noinspection ConstantConditions
     imageViewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
+    galleryViewModel = new ViewModelProvider(getActivity()).get(GalleryViewModel.class);
     galleryViewModel.getGalleries().observe(getViewLifecycleOwner(),
         (galleries) -> UploadPropertiesFragment.this.galleries = galleries);
   }
