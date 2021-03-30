@@ -17,6 +17,7 @@ import edu.cnm.deepdive.gallery12.service.ImageRepository;
 import edu.cnm.deepdive.gallery12.service.UserRepository;
 import io.reactivex.disposables.CompositeDisposable;
 import java.util.List;
+import java.util.UUID;
 
 public class ImageViewModel extends AndroidViewModel implements LifecycleObserver {
 
@@ -58,11 +59,11 @@ public class ImageViewModel extends AndroidViewModel implements LifecycleObserve
     return throwable;
   }
 
-  public void store(Uri uri, String title, String description) {
+  public void store(UUID galleryId, Uri uri, String title, String description) {
     throwable.postValue(null);
     pending.add(
         imageRepository
-            .add(uri, title, description)
+            .add(galleryId, uri, title, description)
             .subscribe(
                 (image) -> loadImages(), // TODO explore updating list in place without refreshing.
                 this::postThrowable

@@ -12,6 +12,7 @@ import edu.cnm.deepdive.gallery12.model.Gallery;
 import edu.cnm.deepdive.gallery12.service.GalleryRepository;
 import io.reactivex.disposables.CompositeDisposable;
 import java.util.List;
+import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 
 public class GalleryViewModel extends AndroidViewModel implements LifecycleObserver {
@@ -55,6 +56,18 @@ public class GalleryViewModel extends AndroidViewModel implements LifecycleObser
         )
     );
   }
+
+  public void getGallery(UUID id) {
+    throwable.postValue(null);
+    pending.add(
+        galleryRepository.getGallery(id)
+        .subscribe(
+            gallery::postValue,
+            throwable::postValue
+        )
+    );
+  }
+
 
   @OnLifecycleEvent(Event.ON_STOP)
   private void clearPending() {
