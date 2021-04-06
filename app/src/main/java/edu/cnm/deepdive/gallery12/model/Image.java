@@ -1,10 +1,13 @@
 package edu.cnm.deepdive.gallery12.model;
 
 import com.google.gson.annotations.Expose;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class Image {
+public class Image implements Serializable {
+
+  private static final long serialVersionUID = -7002086553567142486L;
 
   @Expose
   private UUID id;
