@@ -6,8 +6,6 @@ import com.squareup.picasso.Picasso;
 import edu.cnm.deepdive.gallery12.service.GoogleSignInService;
 import okhttp3.Interceptor.Chain;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
 
 public class GalleryApplication extends Application {
 
