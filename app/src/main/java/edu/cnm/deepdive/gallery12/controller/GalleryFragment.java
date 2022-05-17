@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -33,11 +37,20 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
   private GalleryViewModel galleryViewModel;
   private GalleryAdapter adapter;
   private FragmentGalleryBinding binding;
+  private ActivityResultLauncher<Intent> launcher;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setHasOptionsMenu(true);
+    launcher = registerForActivityResult(new StartActivityForResult(),
+        result -> {
+          if (result.getResultCode() == Activity.RESULT_OK) {
+            OpenUploadProperties action = NavGraphDirections.openUploadProperties(result.getData().getData());
+            Navigation.findNavController(binding.getRoot()).navigate(action);
+          }
+
+        });
   }
 
   @Override
@@ -62,16 +75,6 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
   }
 
   @Override
-  public void onActivityResult(int requestCode, int resultCode,
-      @Nullable Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-      OpenUploadProperties action = NavGraphDirections.openUploadProperties(data.getData());
-      Navigation.findNavController(binding.getRoot()).navigate(action);
-    }
-  }
-
-  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     binding = FragmentGalleryBinding
@@ -88,7 +91,7 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
     viewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
     galleryViewModel = new ViewModelProvider(getActivity()).get(GalleryViewModel.class);
     galleryViewModel.getGalleries().observe(getViewLifecycleOwner(), (galleries) -> {
-      if(galleries != null) {
+      if (galleries != null) {
         binding.galleryView.setAdapter(new GalleryAdapter(getContext(), galleries, this));
       }
     });
@@ -97,8 +100,11 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
 
   private void pickImage() {
     Intent intent = new Intent();
-    intent.setType("image/*");
+//    intent.setType("image/*");
+    intent.setType("*/*");
+    intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "text/*", "application/*"});
     intent.setAction(Intent.ACTION_GET_CONTENT);
+    launcher.launch(intent);
     startActivityForResult(Intent.createChooser(intent, "Choose image to upload"),
         PICK_IMAGE_REQUEST);
   }
