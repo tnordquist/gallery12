@@ -91,7 +91,7 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
     viewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
     galleryViewModel = new ViewModelProvider(getActivity()).get(GalleryViewModel.class);
     galleryViewModel.getGalleries().observe(getViewLifecycleOwner(), (galleries) -> {
-      if (galleries != null) {
+      if(galleries != null) {
         binding.galleryView.setAdapter(new GalleryAdapter(getContext(), galleries, this));
       }
     });
@@ -105,8 +105,6 @@ public class GalleryFragment extends Fragment implements OnGalleryClickHelper {
     intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "text/*", "application/*"});
     intent.setAction(Intent.ACTION_GET_CONTENT);
     launcher.launch(intent);
-    startActivityForResult(Intent.createChooser(intent, "Choose image to upload"),
-        PICK_IMAGE_REQUEST);
   }
 
   private void updateGallery(Image image) {
